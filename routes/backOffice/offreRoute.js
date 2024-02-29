@@ -12,21 +12,23 @@ const Offre = require('../../models/backOffice/offreModel');
 
 // route pour ajouter une offre
 router.post('/ajoutOffre', async (request, response) => {
-    try {
-        const { libelle_offre ,description_offre , prix_offre,date_offre} = request.body;
+  try {
+      let offre = new Offre()
 
-        Offre.libelle_offre = libelle_offre;
-        Offre.description_offre = description_offre;
-        Offre.prix_offre = prix_offre;
-        Offre.date_offre = date_offre;
-        
-        await Offre.save();
+      const { libelle_offre ,description_offre , prix_offre,date_offre} = request.body;
 
-        return response.status(200).json({ message: "Description de l'employé mise à jour avec succès." });
-    } catch (error) {
-        return response.status(500).json({ message: "Erreur serveur.", esrror: error.message });
-    }
-  });
+      offre.libelle_offre = libelle_offre;
+      offre.description_offre = description_offre;
+      offre.prix_offre = prix_offre;
+      offre.date_offre = date_offre;
+
+      await offre.save();
+
+      return response.status(200).json({ message: "Description de l'employé mise à jour avec succès.", value:offre });
+  } catch (error) {
+      return response.status(500).json({ message: "Erreur serveur.", esrror: error.message });
+  }
+});
     //liste des offres
     router.get('/listeOffres', async (request, response) => {
         try {

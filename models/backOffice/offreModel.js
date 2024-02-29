@@ -5,4 +5,4 @@ const offreSchema = mongoose.Schema({
   date_offre : Date,
   prix_offre: Number
 });
-module.exports = mongoose.model("offre", offreSchema, "Offre");
+module.exports = mongoose.model("Offres", offreSchema, "Offres");
