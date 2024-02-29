@@ -57,7 +57,47 @@ const createRdv = async (req, res) => {
     });
   }
 };
+async function updateHoraires(nouveauRdv) {
+  // Récupérer tous les rendez-vous existants
+  const rdvs = await RendezVous.find();
 
+  let horaires = [];
+  let dateHeureRDV = new Date(nouveauRdv.dateHeureRDV);
+  let heure = dateHeureRDV.getHours();
+  const finHeure = heure + nouveauRdv.delai_detail / 60; // Convertir delai_detail en heures
+
+  while (heure < finHeure) {
+    let rdvExist = rdvs.find(
+      (rdv) =>
+        rdv.id_employe === nouveauRdv.id_employe &&
+        new Date(rdv.dateRdv).getHours() === heure
+    );
+
+    if (rdvExist) {
+      console.log("efa misy");
+      // Si l'horaire existe déjà, ajoutez le délai de la prestation à l'horaire
+      heure += rdvExist.delai_detail / 60; // Convertir delai_detail en heures
+    } else {
+      horaires.push(heure);
+      heure += 15 / 60; // Ajoute 15 minutes converties en heures
+    }
+  }
+
+  return horaires;
+}
+
+async function main() {
+  let nouveauRdv = {
+    dateHeureRDV: "2024-03-10T08:00:00.000+00:00", // Remplacez par la date/heure réelle
+    id_employe: "65d8118c399e76ad23c8892d", // Remplacez par l'ID réel de l'employé
+    delai_detail: 120 / 60, // Remplacez par le délai réel
+  };
+
+  let horaires = await updateHoraires(nouveauRdv);
+  console.log(horaires);
+}
+
+main();
 module.exports = {
   getAllEmploye,
   getHoraires,
@@ -74,4 +114,5 @@ module.exports = {
       })
       .catch((error) => res.status(400).json({ error }));
   },
+  updateHoraires,
 };

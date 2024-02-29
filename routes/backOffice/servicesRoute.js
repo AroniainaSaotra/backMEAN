@@ -48,7 +48,7 @@ router.put('/modifier-services', async (request, response) => {
 
 
 // route pour modifier services
-router.post('/modifyService/:idService', async (request, response) => {
+router.put('/modifyService/:idService', async (request, response) => {
     try {
         const idService = request.params.idService;
 

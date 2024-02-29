@@ -31,7 +31,7 @@ router.get('/listeSousServicesById/:idSousService', async (request, response) =>
 });
 
 // route pour modifier sous-services
-router.post('/modifySousService/:idSousService', async (request, response) => {
+router.put('/modifySousService/:idSousService', async (request, response) => {
     try {
         const idService = request.params.idSousService;
 
