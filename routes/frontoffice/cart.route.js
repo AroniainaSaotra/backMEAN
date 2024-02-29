@@ -9,7 +9,7 @@ router.post("/createrdv", cartController.createRdv);
 router.get("/employe/:id", cartController.getEmployeById);
 router.get("/rendezvous/dates", function (req, res) {
   // Utilisation de la méthode find() pour récupérer tous les rendez-vous
-  RendezVous.find({}, "dateHeureRDV").maxTimeMS(20000)
+  RendezVous.find({}, "dateHeureRDV")
     .then((rendezvous) => {
       // Si aucun erreur, récupérer les dates de chaque rendez-vous
 
@@ -27,7 +27,7 @@ router.get("/rendezvous/dates", function (req, res) {
 });
 router.get("/rendezvous", async (req, res) => {
   try {
-    const rdvs = await RendezVous.find().maxTimeMS(20000);
+    const rdvs = await RendezVous.find();
     res.json(rdvs);
   } catch (err) {
     console.error(err);
