@@ -27,16 +27,13 @@ app.use("/offre",offre);
 
 const customerRoutes = require("./routes/frontoffice/customer.route");
 const prestationRoutes = require("./routes/frontoffice/prestation.route");
-const cartRoutes = require("./routes/frontoffice/cart.route.js");
-const historyRoutes = require("./routes/frontoffice/history.route.js");
+
 const notificationRoutes = require("./routes/frontoffice/notification.route.js");
-app.use("/cart", cartRoutes);
 app.use("/customers", customerRoutes);
 app.use("/prestations", prestationRoutes);
 
 app.use("/customers", customerRoutes);
 app.use("/prestations", prestationRoutes);
-app.use("/historiques", historyRoutes);
 app.use("/notif", notificationRoutes);
 
 app.get("/", (req, res) => {

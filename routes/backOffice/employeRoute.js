@@ -77,7 +77,7 @@ router.get('/listeemploye', async (request, response) => {
     try {
       const idEmploye = request.params.idEmploye;
       rdvByEmploye = await RendezVous.find({"id_employe": new ObjectId(idEmploye)}).populate('id_employe')  // Populate pour les détails de l'employé
-        .populate('id_utilisateur').populate('id_detail').maxTimeMS(20000);;
+        .populate('id_utilisateur').populate('id_detail')
   
       const reponse = {
         message: 'Liste rendez-vous des employes',
@@ -111,7 +111,7 @@ router.get('/rendezVousEmployeEncours/:idEmploye',async(request,response)=>{
     try{
       const idEmploye = request.params.idEmploye ;
       const rdvByEmploye = await RendezVous.find({"id_employe":new ObjectId(idEmploye),"statut": "En cours"}).populate('id_employe')  // Populate pour les détails de l'employé
-      .populate('id_utilisateur').populate('id_detail').maxTimeMS(20000);; 
+      .populate('id_utilisateur').populate('id_detail')
       if(rdvByEmploye){
         const reponse = {
           message: 'Liste rendez-vous des employes',
@@ -142,7 +142,7 @@ router.get('/rendezVousEmployeTermine/:idEmploye',async(request,response)=>{
   try{
     const idEmploye = request.params.idEmploye ;
     const rdvByEmploye = await RendezVous.find({"id_employe":new ObjectId(idEmploye),"statut": "Termine"}).populate('id_employe')  // Populate pour les détails de l'employé
-    .populate('id_utilisateur').populate('id_detail').maxTimeMS(20000); 
+    .populate('id_utilisateur').populate('id_detail')
     if(rdvByEmploye){
       const reponse = {
         message: 'Liste rendez-vous des employes',
@@ -174,7 +174,7 @@ router.get('/rendezVousParDate/:idEmploye/:dateRecherche',async(request,response
       //console.log(request.params.idEmploye);
       const idEmploye = request.params.idEmploye;
       const dateRecherche = request.params.dateRecherche;
-       const rechercheParDate = await RendezVous.find({"idEmploye": new ObjectId(idEmploye),"dateHeureRDV": new Date(dateRecherche)}).maxTimeMS(20000);
+       const rechercheParDate = await RendezVous.find({"idEmploye": new ObjectId(idEmploye),"dateHeureRDV": new Date(dateRecherche)})
        if (rechercheParDate.length>0){
         const reponse = {
           message: 'Rendez-vous par date OK',
@@ -227,7 +227,7 @@ router.put('/rendezvousStatus/:id', async (request, response) => {
           return response.status(400).json({ message: "Le statut du rendez-vous est requis." });
       }
 
-      const rendezvous = await RendezVous.findById(rendezvousId).maxTimeMS(20000);;
+      const rendezvous = await RendezVous.findById(rendezvousId)
 
       if (!rendezvous) {
           return response.status(404).json({ message: "Aucun rendez-vous trouvé avec cet ID." });

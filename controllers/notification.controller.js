@@ -12,14 +12,4 @@ exports.getOffers = async (req, res) => {
   }
 };
 
-exports.getRdvs = async (req, res) => {
-  const userId = req.params.userId;
-  try {
-    const rdvs = await RendezVous.find({ id_utilisateur: userId }).maxTimeMS(20000);;
-    res.json(rdvs);
-  } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Erreur lors de la récupération des rendez-vous" });
-  }
-};
+
