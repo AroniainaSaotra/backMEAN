@@ -20,7 +20,7 @@ async function getHoraires(req, res) {
   if (!employe) {
     return res.status(404).send("Employé non trouvé");
   }
-  const rendezVous = await RendezVous.find({ id_employe: idEmploye });
+  const rendezVous = await RendezVous.find({ id_employe: idEmploye }).maxTimeMS(20000);;
   const jourDate = new Date(jour);
 
   // Générer les horaires disponibles
@@ -59,7 +59,7 @@ const createRdv = async (req, res) => {
 };
 async function updateHoraires(nouveauRdv) {
   // Récupérer tous les rendez-vous existants
-  const rdvs = await RendezVous.find();
+  const rdvs = await RendezVous.find().maxTimeMS(20000);;
 
   let horaires = [];
   let dateHeureRDV = new Date(nouveauRdv.dateHeureRDV);

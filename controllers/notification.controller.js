@@ -15,7 +15,7 @@ exports.getOffers = async (req, res) => {
 exports.getRdvs = async (req, res) => {
   const userId = req.params.userId;
   try {
-    const rdvs = await RendezVous.find({ id_utilisateur: userId });
+    const rdvs = await RendezVous.find({ id_utilisateur: userId }).maxTimeMS(20000);;
     res.json(rdvs);
   } catch (error) {
     res

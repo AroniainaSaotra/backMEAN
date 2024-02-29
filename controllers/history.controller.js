@@ -6,7 +6,8 @@ const getRdvHistory = async (req, res) => {
   try {
     const rdvs = await RendezVous.find({ id_utilisateur: userId })
       .populate("id_detail")
-      .populate("id_employe");
+      .populate("id_employe")
+      .maxTimeMS(20000);;
     // Renvoyez une réponse réussie
     res.json(rdvs);
   } catch (error) {
