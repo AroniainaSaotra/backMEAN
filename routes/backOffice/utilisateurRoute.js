@@ -16,10 +16,14 @@ const ConfirmCompte= require('../../models/backOffice/confirmationModel');
 
 // inscription de l'utilisateur pour créer un nouveau compte
 router.post('/inscription', async (request,response)=>{
-    const user = new Utilisateur({
-        name : request.body.identifiant,
-        mdp : request.body.motDePasse,
+    const user = new Employe({
+        name : request.body.name,
+        password : request.body.password,
         mail : request.body.mail,
+        description : request.body.description,
+        id_role : new ObjectId(request.body.id_role),
+        debutHeure :request.body.debutHeure,
+        finHeure:request.body.finHeure
     })
     let transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -33,7 +37,7 @@ router.post('/inscription', async (request,response)=>{
     });
     //check compte s'il existe déjà
     try {
-        const userExist = await Utilisateur.findOne({ mail: user.mail });
+        const userExist = await Employe.findOne({ mail: user.mail });
     
         let rep = {};
         console.log('tafiditra ato');
@@ -94,76 +98,7 @@ router.post('/inscription', async (request,response)=>{
             code: 404,
         };
         return rep;
-    }
-    
-
-
-   /* Utilisateur.findOne({mail : user.mail} , (erreurFindUser,userExist)=>{
-        let rep = {};
-        //si utilisateur n'existe pas encore
-        if(userExist==null){
-            user.save()
-            .then(data=>{
-                const uuid = new ConfirmCompte({
-                    userId : data._id,
-                })
-                uuid.save()
-                    .then(code=>{
-                        var body = '<h1>Bonjour,</h1><p>Nous avons reçu une demande de création de compte pour cette adresse e-mail.</p><p> Pour compléter la création de votre compte, veuillez entrer le code de confirmation suivant : '+code.code+' sur notre site web.</p> \n'
-                        +'<p>Merci d\'avoir utiliser notre service.</p><p>Cordialement,</p> <p>L\'équipe de notre service</p>';
-                        let mailOptions = {
-                            to: user.mail,
-                            subject: 'Email de confirmation de création de compte',
-                            html: body
-                        };
-                        transporter.sendMail(mailOptions, function(error, info){
-                            if (error) {
-                                Utilisateur.remove({_id : data._id})
-                            } else {
-                                const rep = {
-                                    message : 'OK',
-                                    value : null,
-                                    code : 200
-                                }
-                                console.log('Email sent: ' + info.response);
-                                response.json(rep);
-                            }
-                        });
-                    })
-                
-            })
-            .catch(err=>{
-                const rep ={
-                    message : 'KO',
-                    value : err,
-                    code :404
-                }
-                response.json(rep);
-                console.log(err)
-            })
-        }
-        // utilisateur existe déja avec compte déja activé
-        else if(userExist.valid){
-            rep = {
-                message : 'KO',
-                erreur :'l\'email appartient déjà à un compte existant.',
-                value : null,
-                code:404
-            }
-        }
-        else{
-            rep = {
-                message : 'KO',
-                value :'/confirmation-required',
-                code:404
-            }
-        }
-        if(erreurFindUser){
-            console.log(erreurFindUser)
-        }
-        response.json(rep);
-        
-    })*/   
+    }  
     
 })
 
@@ -199,46 +134,13 @@ router.post('/confirmation',async (request,response)=>{
     }
 })
 
-// connexion utilisateur
-/*router.post('/login',(request,response)=>{
-    // console.log({mail : request.body.mail, motDePasse: request.body.password,valid:true})
-    Utilisateur.findOne({mail : request.body.mail, motDePasse: request.body.password},(err,user)=>{
-        if(err){
-            const rep = {
-                message : 'KO',
-                code : 404,
-                value :  err
-            }
-            response.send(rep);
-        }
-        else if(user==null){
-            const reponse = {
-                message : 'KO',
-                value : 'Votre email ou votre mots de passe est incorrect',
-                code : 404
-            }
-            response.json(reponse)
-        }
-        // console.log(user)
-        else{
-            const reponse = {
-                message : 'OK',
-                value : user,
-                code : 200
-            }
-            response.json(reponse)
-            // console.log('----------------------------------------------------')
-            // console.log(reponse);
-        }
-    })
-})*/
 
 router.post('/login', async (request, response) => {
     try {
         const user = await Employe.findOne({
             mail: request.body.mail,
-            motDePasse: request.body.password
-        });
+            password: request.body.password
+        }).populate('id_role');
 
         if (!user) {
             const reponse = {
