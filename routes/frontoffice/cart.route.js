@@ -7,7 +7,7 @@ router.get("/employe", cartController.getAllEmploye);
 router.get("/horaires", cartController.getHoraires);
 router.post("/createrdv", cartController.createRdv);
 router.get("/employe/:id", cartController.getEmployeById);
-router.get("/rendezvous/dates", function (req, res) {
+/*router.get("/rendezvous/dates", function (req, res) {
   // Utilisation de la méthode find() pour récupérer tous les rendez-vous
   RendezVous.find({}, "dateHeureRDV")
     .then((rendezvous) => {
@@ -35,5 +35,5 @@ router.get("/rendezvous", async (req, res) => {
       .status(500)
       .json({ message: "Erreur lors de la récupération des rendez-vous" });
   }
-});
+});*/
 module.exports = router;
